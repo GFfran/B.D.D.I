@@ -5,6 +5,7 @@ import logging
 from google.appengine.api import urlfetch
 from bot import Bot
 import yaml
+from user_events import UserEventsDao
 
 VERIFY_TOKEN = "ManpowerGroup_Verification_Token"
 ACCESS_TOKEN = "EAAIBWtVSk9YBAMxRJO6U5Y6ONduqFGrpo78O0y3UV7HZCaXbZBxoimXf7ySDIZBGUtdyRwHpW5GZAMb4z8tIecUs6cppLLN9EvFAt1Lx5pUo8nTq1OPs97cJRLWFaZCZAjZCv8YrHQfHa95H9N6hREtrrUELF9UHhZBemioVHWsExAZDZD"
@@ -15,7 +16,17 @@ class MainPage(webapp2.RequestHandler):
         logging.info("Instanciando bot")
         tree = yaml.load(open('tree.yaml'))
         logging.info("Tree: %r", tree)
-        self.bot = Bot(send_message, None, tree)
+        self.bot = Bot(send_message, UserEventsDao(), tree)
+        # dao = UserEventsDao()
+        # dao.add_user_event("123", "user", "abc")
+        # dao.add_user_event("123", "bot", "def")
+        # dao.add_user_event("123", "user", "ghi")
+        # dao.add_user_event("123", "bot", "abc")
+        # dao.add_user_event("123", "user", "ñlk")
+        # data = dao.get_user_events("123")
+        # logging.info("eventos: %r", data)
+        #print data
+        #dao.remove_user_events("123")
 
     def get(self):
         self.response.headers['Content-Type'] = 'text/plain'
